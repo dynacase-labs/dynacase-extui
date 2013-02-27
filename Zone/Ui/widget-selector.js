@@ -306,12 +306,8 @@ Ext.fdl.FamilyComboBox = Ext.extend(Ext.form.ComboBox, {
         			criteria : [ {
         		  		or : [{
         		  			operator : '=',
-        		  			left : 'usefor',
-        		  			right : 'N'
-        		  		}, {
-        		  			operator : '=',
-        		  			left : 'usefor',
-        		  			right : 'F'
+        		  			left : 'doctype',
+        		  			right : 'C'
         		  		}]
         		  	}]
         		})
@@ -337,7 +333,7 @@ Ext.fdl.FamilyComboBox = Ext.extend(Ext.form.ComboBox, {
             
             for (var i = 0; i < sr.length; i++) {
             	var family = sr[i];
-	            if(!this.control || (this.control && family.control(this.control))){
+	            if((!this.control || (this.control && family.control(this.control))) && family.getProperty('dfldid')){
 		            data.push({
 		                id: family.getProperty('id'),
 		                title: Ext.util.Format.capitalize(family.getTitle()),

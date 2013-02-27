@@ -14,6 +14,24 @@ Ext.fdl.FamilyTreePanel = function(config){
     Ext.fdl.FamilyTreePanel.superclass.constructor.call(this, config);
 };
 
+Ext.isIE9 = Ext.isIE && (/msie 9/).test(navigator.userAgent.toLowerCase());
+Ext.isIE10 = Ext.isIE && (/msie 10/).test(navigator.userAgent.toLowerCase());
+if (Ext.isIE9 || Ext.isIE10) {
+    Ext.override(Ext.tree.TreeEventModel, {
+        getNode: function (e) {
+            var t;
+            if (t = e.getTarget('.x-tree-node-el', 10)) {
+                //var id = Ext.fly(t, '_treeEvents').getAttribute('tree-node-id', 'ext');// BUG !!!
+                var id = e.getTarget('.x-tree-node-el', 10).getAttribute("ext:tree-node-id"); // FIX!!!
+                if (id) {
+                    return this.tree.getNodeById(id);
+                }
+            }
+            return null;
+        }
+    });
+}
+
 Ext.extend(Ext.fdl.FamilyTreePanel, Ext.tree.TreePanel, {
 
     context: null,
@@ -37,8 +55,7 @@ Ext.extend(Ext.fdl.FamilyTreePanel, Ext.tree.TreePanel, {
 	    console.log('DATACONFIG',this.dataConfig);
 		
 		var famsearches = this.context.retrieveData(this.dataConfig);
-        console.log('FAMSEARCHES',famsearches);
-        
+
         var afamilies = this.getOnefamSearches(famsearches.admin);
         var ufamilies = this.getOnefamSearches(famsearches.user);
         
@@ -74,7 +91,7 @@ Ext.extend(Ext.fdl.FamilyTreePanel, Ext.tree.TreePanel, {
         
     initComponent: function(){
     
-    	if(this.familyData){    		
+    	if(this.familyData){
     		var afamilies = this.getOnefamSearches(this.familyData.admin);
         	var ufamilies = this.getOnefamSearches(this.familyData.user);        
         	var families = afamilies.concat(ufamilies);    		
@@ -116,10 +133,6 @@ Ext.extend(Ext.fdl.FamilyTreePanel, Ext.tree.TreePanel, {
         
         this.expandedFamilyList = {};
         
-    },
-    
-    displayDocument: function(id, mode, title){
-        this.publish('opendocument', this, id, mode);
     },
     
     displaySearch: function(filter, title){
@@ -218,7 +231,6 @@ Ext.extend(Ext.fdl.FamilyTreePanel, Ext.tree.TreePanel, {
                 children: sf,
                 listeners: {
                     click: function(n, e){
-                    
                         me.displaySearch({
                             family: n.attributes.documentId
                         },n);
