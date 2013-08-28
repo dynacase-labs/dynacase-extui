@@ -16,3 +16,10 @@ pages_not_xml = info.xml
 pages_not_php = fam2po.php po2js.php
 
 include $(utildir)/PubRule
+
+$(pubdir)/.autoloader-ignore.d:
+	mkdir -p $@
+$(pubdir)/.autoloader-ignore.d/@PACKAGE@: autoloader-ignore-d $(pubdir)/.autoloader-ignore.d
+	cp $< $@
+
+publish: $(pubdir)/.autoloader-ignore.d/@PACKAGE@
