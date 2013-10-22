@@ -202,8 +202,8 @@ Ext.fdl.Interface = Ext.extend(Ext.util.Observable, {
 			win = new Ext.fdl.Window({
 				layout: 'fit',
 				id: target == '_blank' ? ('blank' + me.blankWindowCurId) : target,
-				height: config.height || 400,
-				width: config.width || 400,
+				height: parseInt(config.height) || 400,
+                width: parseInt(config.width) || 400,
 				border: true,
 				title: config.title,
 				listeners: {
