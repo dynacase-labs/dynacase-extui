@@ -143,7 +143,7 @@ Ext.fdl.Interface = Ext.extend(Ext.util.Observable, {
 		}
 				
 		// If the url is an url for a freedom document, we parse it and redirect to openDocument
-		if((new RegExp("action=(FDL_CARD|VIEWEXTDOC)", "i").test(url) && new RegExp("app=FDL", "i").test(url))){
+		if((new RegExp("action=(FDL_CARD|VIEWEXTDOC|EUI_VIEWDOC)", "i").test(url) && new RegExp("app=(FDL|EXTUI)", "i").test(url))){
 			if (! new RegExp("zone=.*:pdf", "").test(url) ) {
 				if (new RegExp("zone=.*\.odt", "").test(url) ) {
 					window.open(url,'download_frame');
@@ -156,7 +156,7 @@ Ext.fdl.Interface = Ext.extend(Ext.util.Observable, {
 			}
 		}
 		
-		if((new RegExp("action=(GENERIC_EDIT|EDITEXTDOC)", "i").test(url) && new RegExp("app=(GENERIC|FDL)", "i").test(url))){									
+		if((new RegExp("action=(GENERIC_EDIT|EDITEXTDOC|EUI_EDITDOC)", "i").test(url) && new RegExp("app=(GENERIC|FDL|EXTUI)", "i").test(url))){
 			var result = url.match(new RegExp("id=([0-9]+)","i"));		
 			if (! result) {
 				result = url.match(new RegExp("(classid|famid)=([0-9A-Z_-]+)","i"));
@@ -255,7 +255,6 @@ Ext.fdl.Interface = Ext.extend(Ext.util.Observable, {
 		}
 		
 		jswindow.extResize = function(dw,dh){
-			console.log('extResize',dw,dh);
 			win.setWidth(win.getWidth() + dw);
 			win.setHeight(win.getHeight() + dh + 32);
 		};

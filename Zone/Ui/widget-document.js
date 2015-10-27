@@ -242,13 +242,15 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
             	
     	var me = this ;
             			
-		//console.log('GENERATE MENU',panel,menu,mediaObject.dom);
-		
-		//panel.getTopToolbar().removeAll();
 		menu.removeAll();
 
 		var documentMenu = mediaObject.dom.contentWindow.documentMenu;
-		//console.log('DOCUMENT MENU',documentMenu);
+        if (mediaObject.dom.contentWindow.location.href.match("action=VIEWEXTDOC")) {
+            var url=mediaObject.dom.contentWindow.location.href;
+            url=url.replace("action=VIEWEXTDOC", "action=EUI_VIEWDOC");
+            url=url.replace("app=FDL", "app=EXTUI");
+            mediaObject.dom.contentWindow.location.href=url;
+        }
 		
 		var documentId = (mediaObject.dom.contentWindow.document.getElementsByName('document-id').length > 0) ? mediaObject.dom.contentWindow.document.getElementsByName('document-id')[0].content : '' ;
 		//console.log('DOCUMENT ID', documentId);
@@ -276,7 +278,6 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
 				context: this.context,
 				menu: menu
 			});
-			console.log('MENU ITEM',menuItem);
 			menu.add(menuItem);
 		}
 		
@@ -335,22 +336,20 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
     	if(!this.config.targetRelation){
     	 	//this.config.targetRelation = 'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view")';
     	}
-    	
-    	console.log('CONFIG',this.config);
+
     	delete this.config.opener ;
 
         var sconf='';
         if (this.config && this.document.context) sconf=JSON.stringify(this.config);
-        //console.log(this.config);
-        //console.log(JSON.stringify(this.config));
         
     	if(this.config.url){
     		var url = this.config.url ;
-    		url = url.replace(new RegExp("(action=FDL_CARD)","i"),"action=VIEWEXTDOC");
-    		//url = this.document.context.url + url ;
-    		console.log('Calculated URL',url);
+            if (url.match("action=FDL_CARD")) {
+                url = url.replace('action=FDL_CARD','action=EUI_VIEWDOC' );
+                url = url.replace('app=FDL','app=EXTUI' );
+            }
     	} else {
-			url = this.document.context.url + '?app=FDL&action=VIEWEXTDOC&id=' + this.document.getProperty('id') + '&extconfig='+encodeURI(sconf);
+			url = this.document.context.url + '?app=EXTUI&action=EUI_VIEWDOC&id=' + this.document.getProperty('id') + '&extconfig='+encodeURI(sconf);
     	}
         
         var mediaPanel = new Ext.ux.MediaPanel({
@@ -367,16 +366,13 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
             		
             		me.mediaObject = mediaObject;
             		
-            		var menu = me.getTopToolbar();            		
-            		console.log('MEDIA OBJECT',mediaObject);
+            		var menu = me.getTopToolbar();
             		me.generateMenu(panel,menu,mediaObject);
             		
             		addEvent(mediaObject.dom,'load',function(){
-            			var menu = me.getTopToolbar();            		
-            			console.log('MEDIA OBJECT',mediaObject);
+            			var menu = me.getTopToolbar();
             			me.generateMenu(panel,menu,mediaObject);
             		});
-            		            		            		
             	}               
            }
         });
@@ -399,9 +395,8 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
     		url = url.replace(new RegExp("(app=GENERIC)","i"),"app=FDL");
     		url = url.replace(new RegExp("(action=GENERIC_EDIT)","i"),"action=EDITEXTDOC");
     		//url = this.document.context.url + url ;
-    		console.log('Calculated URL',url);
     	} else {
-			var url = this.document.context.url + '?app=FDL&action=EDITEXTDOC&classid=' + this.document.getProperty('fromid') + '&id=' + this.document.getProperty('id');
+			var url = this.document.context.url + '?app=EXTUI&action=EUI_EDITDOC&classid=' + this.document.getProperty('fromid') + '&id=' + this.document.getProperty('id');
     	}
     	
         var mediaPanel = new Ext.ux.MediaPanel({
@@ -418,13 +413,11 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
             		
             		me.mediaObject = mediaObject;
             		
-            		var menu = me.getTopToolbar();            		
-            		console.log('MEDIA OBJECT(1)',mediaObject);
+            		var menu = me.getTopToolbar();
             		me.generateMenu(panel,menu,mediaObject);
             		
             		addEvent(mediaObject.dom,'load',function(){
-            			var menu = me.getTopToolbar();            		
-            			console.log('MEDIA OBJECT(2)',mediaObject);
+            			var menu = me.getTopToolbar();
             			me.generateMenu(panel,menu,mediaObject);
             		});
             		            		
@@ -501,7 +494,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
                     else {
                         note = this.notes[noteids[i]].document;
                     }
-                    if (note.isAlive()) {
+                    if (note.isAlive() && note.getProperty("fromname") === "SIMPLENOTE") {
                         var color = 'yellow';
                         var nocolor = note.getValue('note_color');
                         if (nocolor) 
@@ -566,6 +559,19 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
                             else 
                                 this.notes[noteids[i]].window.setVisible(true);
                         }
+                    } else {
+                        if (this.body.select("iframe").elements.length > 0) {
+                            if (config && config.undisplay) {
+                                var spostip=this.body.select("iframe").elements[0].contentWindow.document.getElementById("POSTIT_s");
+                                if (spostip) {
+                                    spostip.parentNode.parentNode.removeChild(spostip.parentNode);
+                                } else {
+                                    this.body.select("iframe").elements[0].contentWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteids[i]);
+                                }
+                            } else {
+                                this.body.select("iframe").elements[0].contentWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteids[i]);
+                            }
+                        }
                     }
                 }
                 
@@ -576,8 +582,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
     },
     
     includeJS: function(url){
-    
-        console.log('Include JS', url);
+
         
         if (window.XMLHttpRequest) {
             var XHR = new XMLHttpRequest();
@@ -607,7 +612,6 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
     },
     
     documentToolbarStatus: function(){
-    	
     	// If document is in creation mode, no toolbar status to display
     	if(!this.document.id){
     		return false ;
@@ -621,7 +625,6 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
         var statestatustext = '';
         
         if(this.document.getProperty('version')){
-        	console.log('VERSION',this.document.getProperty('version'));
         	statestatustext = 'version ' + this.document.getProperty('version')+' ';
         }
         
@@ -663,7 +666,6 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
         
         var postitstatus = null;
         if (this.document.getProperty('postitid').length > 0) {
-            //console.log(this.document.getProperty('postitid'));
             postitstatus = new Ext.Button({
                 tooltip: 'Afficher/Cacher les notes',
                 text: 'Notes',
@@ -735,7 +737,6 @@ Ext.fdl.SubDocument = Ext.extend(Ext.form.FormPanel, {
     },
     
     close: function(){
-    	console.log('DOCUMENT CLOSE');
 		this.fireEvent('close',this);
     },
     
@@ -919,7 +920,6 @@ Ext.fdl.SubDocument = Ext.extend(Ext.form.FormPanel, {
                     var oa = new Fdl.RelationAttribute({
                         relationFamilyId: 'IUSER'
                     });
-                    console.log('THISDOCUMENT', this.document, oa);
                     oa._family = this.document;
                     
                     //console.log(oa);
@@ -1097,7 +1097,7 @@ Ext.fdl.SubDocument = Ext.extend(Ext.form.FormPanel, {
     },
     
     documentToolbarStatus: function(){
-    
+
         var u = this.document.context.getUser();
         var info = u.getInfo();
         
@@ -1107,7 +1107,7 @@ Ext.fdl.SubDocument = Ext.extend(Ext.form.FormPanel, {
                 lockstatus = new Ext.Toolbar.TextItem('<img ext:qtip="Verrouillé par ' + this.document.getProperty('locker') + '" src="FDL/Images/greenlock.png" style="height:16px" />');
             }
             else {
-                lockstatus = new Ext.Toolbar.TextItem('<img ext:qtip="Vérrouillé par ' + this.document.getProperty('locker') + '" src="FDL/Images/redlock.png" style="height:16px" />');
+                lockstatus = new Ext.Toolbar.TextItem('<img ext:qtip="Verrouillé par ' + this.document.getProperty('locker') + '" src="FDL/Images/redlock.png" style="height:16px" />');
             }
         }
         
@@ -1135,7 +1135,6 @@ Ext.fdl.SubDocument = Ext.extend(Ext.form.FormPanel, {
                     });
                 }
             });
-            
         }
         
         // TODO Correct the icon path
@@ -1577,8 +1576,6 @@ Ext.fdl.SubDocument = Ext.extend(Ext.form.FormPanel, {
                     
                         var values = this.document.getValue(attr.id);
                         var displays = this.document.getDisplayValue(attr.id);
-                        
-                        console.log('Attribute', values, displays);
                         
                         var fieldValue = '';
                         
