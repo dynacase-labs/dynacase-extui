@@ -33,9 +33,24 @@ $app_desc = array(
 );
 
 
+$app_acl = array(
+    array(
+        "name" => "NORMAL",
+        "description" => N_("Access Extui View"),
+        "group_default" => "Y")
+);
 $action_desc = array(
     array(
         "name" => "EUI_XMLMENU",
-        "short_name" => N_("xml menu parsing"))
+        "acl"=>"NORMAL",
+        "short_name" => N_("xml menu parsing")),
+    array(
+        "name" => "EUI_VIEWDOC",
+        "acl"=>"NORMAL",
+        "short_name" => N_("view document in ext")),
+    array(
+        "name" => "EUI_EDITDOC",
+        "acl"=>"NORMAL",
+        "short_name" => N_("edit document in ext"))
 );
 ?>
