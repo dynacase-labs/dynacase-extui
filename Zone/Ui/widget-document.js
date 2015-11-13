@@ -265,7 +265,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
 		
 		var document = this.context.getDocument({
 			id: documentId,
-			useCache:true,
+			useCache:false,
 			latest: false
 		});
 				
