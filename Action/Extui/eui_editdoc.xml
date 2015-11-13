@@ -67,8 +67,9 @@
         <input type="hidden" name="quicksave" value="0">
         <input type="hidden" name="catgid" >
         <input type="hidden" name="noconstraint" value="N">
+                [IF id]
         <input type="hidden" name="redirect_app" value="EXTUI">
-        <INPUT TYPE="hidden" name="redirect_act" value="EUI_VIEWDOC&id=%ID%">
+        <INPUT TYPE="hidden" name="redirect_act" value="EUI_VIEWDOC&id=[id]"> [ENDIF id]
 
         [IFNOT ISIE]<div id="fixspanhead" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]
         [ZONE FDL:EDITCARD]
