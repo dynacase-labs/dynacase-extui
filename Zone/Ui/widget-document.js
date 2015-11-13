@@ -84,12 +84,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
                 fn: function(){
 					                
                     this.switchMode(this.mode);
-                    
-                    var o = this;
-                    
-                    (function(){
-                        o.viewNotes();
-                    }).defer(1000);
+
 					
 					fdldoc = this.document;
 					
@@ -111,6 +106,13 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
     },
     
     reload: function(){
+        if (this.document.id) {
+            this.document=this.context.getDocument({
+                id: this.document.id,
+                useCache: false
+            });
+        }
+
     	this.switchMode(this.mode);
     },
     
@@ -123,7 +125,8 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
         }
         
         this.removeAll();
-        
+
+        this.mode = mode;
         switch (mode) {
             case 'view':
                 if ((this.document.getProperty('generateVersion') == 3 && !this.forceClassic)|| this.forceExt) {
@@ -222,8 +225,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
             default:
                 break;
         };
-        
-        this.mode = mode;
+
         
         // Do layout will not work on render. It must not be called first time.
         if (this.firstLayout) {
@@ -251,6 +253,12 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
             url=url.replace("app=FDL", "app=EXTUI");
             mediaObject.dom.contentWindow.location.href=url;
         }
+        if (mediaObject.dom.contentWindow.location.href.match("action=EUI_EDITDOC")) {
+            this.mode='edit';
+        } else if (mediaObject.dom.contentWindow.location.href.match("action=EUI_VIEWDOC")) {
+            this.mode='view';
+        }
+
 		
 		var documentId = (mediaObject.dom.contentWindow.document.getElementsByName('document-id').length > 0) ? mediaObject.dom.contentWindow.document.getElementsByName('document-id')[0].content : '' ;
 		//console.log('DOCUMENT ID', documentId);
@@ -263,6 +271,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
 				
 		if(document && document.id){
 			this.setDocument(document);
+            this.viewNotes();
 			//console.log('DOCUMENT',documentId,me.document.getTitle());
 			//me.publish('modifydocument',me.document);
 		}
@@ -561,15 +570,34 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
                         }
                     } else {
                         if (this.body.select("iframe").elements.length > 0) {
+                            var insideWindow;
+                            var noteid=noteids[i];
                             if (config && config.undisplay) {
                                 var spostip=this.body.select("iframe").elements[0].contentWindow.document.getElementById("POSTIT_s");
                                 if (spostip) {
                                     spostip.parentNode.parentNode.removeChild(spostip.parentNode);
                                 } else {
-                                    this.body.select("iframe").elements[0].contentWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteids[i]);
+                                    insideWindow=this.body.select("iframe").elements[0].contentWindow;
+                                    if (insideWindow.postit) {
+                                        insideWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteid);
+                                    } else {
+                                        this.body.select("iframe").on("load", function ()
+                                        {
+                                            this.contentWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteid);
+                                        });
+                                    }
                                 }
                             } else {
-                                this.body.select("iframe").elements[0].contentWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteids[i]);
+                                insideWindow=this.body.select("iframe").elements[0].contentWindow;
+                                if (insideWindow.postit) {
+                                    insideWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteid);
+                                } else {
+                                    this.body.select("iframe").on("load", function ()
+                                    {
+                                        this.contentWindow.postit('?app=FDL&action=FDL_CARD&dochead=N&id=' + noteid);
+                                    });
+                                }
+
                             }
                         }
                     }
@@ -651,7 +679,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
                 lockstatus = new Ext.Toolbar.TextItem('<img ext:qtip="Verrouillé par ' + this.document.getProperty('locker') + '" src="' + this.document.context.url + 'FDL/Images/greenlock.png" style="height:16px" />');
             }
             else {
-                lockstatus = new Ext.Toolbar.TextItem('<img ext:qtip="Vérrouillé par ' + this.document.getProperty('locker') + '" src="' + this.document.context.url + 'FDL/Images/redlock.png" style="height:16px" />');
+                lockstatus = new Ext.Toolbar.TextItem('<img ext:qtip="Verrouillé par ' + this.document.getProperty('locker') + '" src="' + this.document.context.url + 'FDL/Images/redlock.png" style="height:16px" />');
             }
         }
         
@@ -665,7 +693,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
             }
         
         var postitstatus = null;
-        if (this.document.getProperty('postitid').length > 0) {
+        if (this.mode === "view" && this.document.getProperty('postitid').length > 0) {
             postitstatus = new Ext.Button({
                 tooltip: 'Afficher/Cacher les notes',
                 text: 'Notes',
@@ -1121,7 +1149,7 @@ Ext.fdl.SubDocument = Ext.extend(Ext.form.FormPanel, {
             }
         
         var postitstatus = null;
-        if (this.document.getProperty('postitid').length > 0) {
+        if (this.mode === "view" && this.document.getProperty('postitid').length > 0) {
             //console.log(this.document.getProperty('postitid'));
             postitstatus = new Ext.Button({
                 tooltip: 'Afficher/Cacher les notes',
