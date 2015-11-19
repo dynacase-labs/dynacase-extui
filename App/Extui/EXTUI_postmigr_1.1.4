@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+ME=$(basename "$0")
+
+function wsh_api {
+	logger -t "$ME" -- "BEGIN:$@"
+	"$wpub/wsh.php" "$@"
+	logger -t "$ME" -- "END:$@"
+}
+
+wsh_api --api=importDocuments --file="EXTUI/defaultAccess.csv"
