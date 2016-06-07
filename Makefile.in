@@ -10,7 +10,7 @@ export pubdir utildir utildir libdir appname
 TAR = tar
 GZIP_ENV = --best
 
-SUBDIR = App Action Zone Images
+SUBDIR = App Action Zone Images locale
 
 pages_not_xml = info.xml
 pages_not_php = fam2po.php po2js.php

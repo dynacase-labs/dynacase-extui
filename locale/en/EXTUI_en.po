@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Extui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-16 18:25+0100\n"
+"POT-Creation-Date: 2016-06-07 15:33+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -18,10 +18,80 @@ msgstr ""
 msgid "(.*)\\"
 msgstr ""
 
+msgid "Access Extui View"
+msgstr ""
+
+msgctxt "extui"
+msgid "Add a note"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Changes will be loosed if you continue"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create !"
+msgstr ""
+
+#, php-format
+msgid "Creation %s"
+msgstr ""
+
+#, php-format
+msgid "Creation aborded : no family specified"
+msgstr ""
+
+#, php-format
+msgid "Creation aborded : unknow family %s"
+msgstr ""
+
 msgid "Ext ui api"
 msgstr ""
 
 msgid "Ext user interface api"
+msgstr ""
+
+msgctxt "extui"
+msgid "Family"
+msgstr ""
+
+msgctxt "extui"
+msgid "Historic"
+msgstr ""
+
+#, php-format
+msgid "Incorrect specification of special menu : %s"
+msgstr ""
+
+msgctxt "extui"
+msgid "Reload document"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save !"
+msgstr ""
+
+msgctxt "extui"
+msgid "Send document"
+msgstr ""
+
+msgctxt "extui"
+msgid "View print version"
+msgstr ""
+
+msgid "document not referenced"
+msgstr ""
+
+msgid "edit document in ext"
+msgstr ""
+
+msgid "edition: "
 msgstr ""
 
 msgid "eui:Abstract display"
@@ -126,9 +196,35 @@ msgstr "No id in itemlistmenu"
 msgid "eui:no itemmenu tags found"
 msgstr "No itemmenu tags found"
 
+msgctxt "extui"
+msgid "no"
+msgstr ""
+
+#, php-format
+msgid "no privilege to create interactivaly this kind (%s) of document"
+msgstr ""
+
+#, php-format
+msgid "no privilege to create this kind (%d) of document"
+msgstr ""
+
+#, php-format
+msgid "no privilege to create this kind (%s) of document"
+msgstr ""
+
+msgid "override constraints"
+msgstr ""
+
+msgid "view document in ext"
+msgstr ""
+
 msgid "xml menu parsing"
 msgstr ""
 
-#, c-format
+#, php-format
 msgid "xml parse error %s"
+msgstr ""
+
+msgctxt "extui"
+msgid "yes"
 msgstr ""

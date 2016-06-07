@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Extui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-16 18:25+0100\n"
+"POT-Creation-Date: 2016-06-07 15:29+0200\n"
 "PO-Revision-Date: 2010-02-08 15:49+0100\n"
 "Last-Translator: anakeen\n"
 "Language-Team: english\n"
@@ -15,93 +15,127 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: Zone/Ui/widget-family-xplorer.js:476
 msgid "eui::Administrator"
 msgstr "Administrator"
 
+#: Zone/Ui/widget-document-multiview.js:96
 msgid "eui::Content"
 msgstr "Content"
 
+#: Zone/Ui/widget-family-xplorer.js:137
 msgid "eui::Create Search"
 msgstr "Create Search"
 
+#: Zone/Ui/widget-family-xplorer.js:437
 msgid "eui::Create search :"
 msgstr "Create Search :"
 
+#: Zone/Ui/widget-window.js:286 Zone/Ui/widget-multi-document.js:292
+#: Zone/Ui/widget-multi-document.js:309 Zone/Ui/widget-multi-document.js:328
 msgid "eui::Creation :"
 msgstr "Creation :"
 
+#: Zone/Ui/widget-family-xplorer.js:490
 msgid "eui::Display"
 msgstr "Display"
 
+#: Zone/Ui/widget-collection.js:620
 msgid "eui::Duplicate"
 msgstr "Duplicate"
 
+#: Zone/Ui/widget-family-xplorer.js:353
 #, fuzzy
 msgid "eui::Edit search :"
 msgstr "Edit Search"
 
+#: Zone/Ui/widget-family-xplorer.js:411
 msgid "eui::Enter search name"
 msgstr "Enter search name"
 
+#: Zone/Ui/widget-family-xplorer.js:320 Zone/Ui/widget-family-xplorer.js:395
 msgid "eui::Evaluate"
 msgstr "Evaluate"
 
+#: Zone/Ui/widget-family-xplorer.js:473
 msgid "eui::Families"
 msgstr "Families"
 
+#: Zone/Ui/widget-family-xplorer.js:493
 msgid "eui::Horizontal"
 msgstr "Horizontal"
 
+#: Zone/Ui/widget-document-multiview.js:115
 msgid "eui::Informations"
 msgstr "Information"
 
+#: Zone/Ui/widget-collection.js:623
 msgid "eui::Link"
 msgstr "Link"
 
+#: Zone/Ui/widget-collection.js:626
 msgid "eui::Move"
 msgstr "Move"
 
+#: Zone/Ui/widget-family-xplorer.js:334 Zone/Ui/widget-family-xplorer.js:408
 msgid "eui::Save"
 msgstr "Save"
 
+#: Zone/Ui/widget-family-xplorer.js:134
 msgid "eui::Search"
 msgstr "Search"
 
+#: Zone/Ui/widget-family-xplorer.js:159 Zone/Ui/widget-family-xplorer.js:168
 msgid "eui::Search by exp"
 msgstr "Search by expression"
 
+#: Zone/Ui/widget-family-xplorer.js:146 Zone/Ui/widget-family-xplorer.js:155
+#: Zone/Ui/widget-family-xplorer.js:177
 msgid "eui::Search by word"
 msgstr "Search by word"
 
+#: Zone/Ui/widget-document.js:865
 msgid "eui::ToEdit"
 msgstr "Edit"
 
+#: Zone/Ui/widget-family-xplorer.js:482
 msgid "eui::User"
 msgstr "User"
 
+#: Zone/Ui/widget-family-xplorer.js:528
 msgid "eui::Vertical"
 msgstr "Vertical"
 
+#: Zone/Ui/widget-window.js:259 Zone/Ui/widget-interface.js:99
+#: Zone/Ui/widget-multi-document.js:281
 msgid "eui::You have no right to access this document"
 msgstr "You have no right to access this document"
 
+#: Zone/Ui/widget-collection-icon.js:641
 msgid "eui::delete"
 msgstr "Delete"
 
+#: Zone/Ui/widget-collection-icon.js:630
 msgid "eui::documents"
 msgstr "documents"
 
+#: Zone/Ui/widget-collection.js:597
 msgid "eui::infolder"
 msgstr "in"
 
+#: Zone/Ui/widget-collection-grid.js:1361
 msgid "eui::lock_as_name"
 msgstr "lock"
 
+#: Zone/Ui/widget-window.js:259 Zone/Ui/widget-interface.js:99
+#: Zone/Ui/widget-multi-document.js:281
 msgid "eui::missing right"
 msgstr "Missing Right"
 
+#: Zone/Ui/widget-collection-icon.js:643
 msgid "eui::totrash"
 msgstr "To Trash"
 
+#: Zone/Ui/widget-collection-icon.js:696
 msgid "eui:cannot delete"
 msgstr "cannot delete"
