@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace Dcp\ExtUi;
 
@@ -14,8 +14,7 @@ class defaultMenu
     {
         
         $mainmenu = '';
-        if ($doc->doctype == 'C') $popup = getpopupfamdetail($action, $doc->id);
-        else $popup = getpopupdocdetail($action, $doc->id);
+        $popup = self::getMenuItems($action, $doc);
         // rewrite for api 3.0
         $im = array();
         foreach ($popup as $k => $v) {
@@ -42,12 +41,12 @@ class defaultMenu
                     "icon" => $v["icon"],
                     "confirm" => (($v["confirm"] && $v["confirm"] != 'false') ? array(
                         "label" => $v["tconfirm"],
-                        "continue" => _("yes") ,
-                        "cancel" => _("no")
+                        "continue" => ___("yes", "extui") ,
+                        "cancel" => ___("no", "extui")
                     ) : null)
                 );
                 if (!$v["submenu"]) {
-                    $mainmenu = ($doc->doctype == 'C') ? _("Family") : $v["submenu"] = $doc->fromtitle;
+                    $mainmenu = ($doc->doctype == 'C') ? ___("Family", "extui") : $v["submenu"] = $doc->fromtitle;
                     $v["submenu"] = $mainmenu;
                 }
                 if ($v["submenu"]) {
@@ -68,7 +67,7 @@ class defaultMenu
                 "file" => "lib/ui/fdl-interface-action-common.js",
                 "class" => "Fdl.InterfaceAction.Historic"
             ) ,
-            "label" => _("Historic") ,
+            "label" => ___("Historic", "extui") ,
             "visibility" => isset($im[$mainmenu]["items"]["histo"]["visibility"]) ? $im[$mainmenu]["items"]["histo"]["visibility"] : ''
         );
         $fnote = new_doc($doc->dbaccess, "SIMPLENOTE");
@@ -79,7 +78,7 @@ class defaultMenu
                         "file" => "lib/ui/fdl-interface-action-common.js",
                         "class" => "Fdl.InterfaceAction.SimpleNote"
                     ) ,
-                    "label" => _("Add a note") ,
+                    "label" => ___("Add a note", "extui") ,
                     "visibility" => $im[$mainmenu]["items"]["addpostit"]["visibility"]
                 );
             } else {
@@ -99,13 +98,13 @@ class defaultMenu
         if ($doc->control("send") == "") {
             $im[$mainmenu]["items"]["sendmail"] = array(
                 "url" => "?app=FDL&action=EDITMAIL&viewext=yes&mid=" . $doc->id,
-                "label" => _("Send document") ,
+                "label" => ___("Send document", "extui") ,
                 "visibility" => POPUP_ACTIVE
             );
         }
         $im[$mainmenu]["items"]["viewprint"] = array(
             "javascript" => "window.open('?app=FDL&action=IMPCARD&view=print&id=" . $doc->id . "','_blank')",
-            "label" => _("View print version") ,
+            "label" => ___("View print version", "extui") ,
             "visibility" => POPUP_ACTIVE
         );
         $im[$mainmenu]["items"]["reload"] = array(
@@ -113,7 +112,7 @@ class defaultMenu
                 "file" => "lib/ui/fdl-interface-action-common.js",
                 "class" => "Fdl.InterfaceAction.Reload"
             ) ,
-            "label" => _("Reload document") ,
+            "label" => ___("Reload document", "extui") ,
             "visibility" => POPUP_ACTIVE
         );
         return $im;
@@ -140,8 +139,39 @@ class defaultMenu
             ) , $url);
         }
         
-       $url=preg_replace('/((?:^|[?&])app=[A-Z]+)/', '${1}&viewext=yes', $url);
+        $url = preg_replace('/((?:^|[?&])app=[A-Z]+)/', '${1}&viewext=yes', $url);
         
         return $url;
+    }
+    
+    protected static function getMenuItems(\Action $action, \Doc $doc)
+    {
+        $popup = [];
+        if ($doc->doctype == 'C') {
+            $popup = getpopupfamdetail($action, $doc->id);
+        } else {
+            if ($doc->specialmenu) {
+                if (preg_match("/(.*):(.*)/", $doc->specialmenu, $reg)) {
+                    $action->parent->setVolatileParam("getmenulink", 1);
+                    
+                    $dir = $reg[1];
+                    $function = strtolower($reg[2]);
+                    $file = $function . ".php";
+                    if (include_once ("$dir/$file")) {
+                        $function($action);
+                        $popup = $action->getParam("menulink");;
+                    } else {
+                        addwarningMsg(sprintf(_("Incorrect specification of special menu : %s") , $doc->specialmenu));
+                    }
+                    $action->parent->setVolatileParam("getmenulink", null);
+                } else {
+                    addwarningMsg(sprintf(_("Incorrect specification of special menu : %s") , $doc->specialmenu));
+                }
+            }
+        }
+        if (!$popup) {
+            $popup = getpopupdocdetail($action, $doc->id);
+        }
+        return $popup;
     }
 }
