@@ -1589,7 +1589,6 @@ Ext.fdl.CollectionContainer = Ext.extend(Ext.Panel,{
             
             if (data) {
                 if (!data.error) {
-                    console.log('COLLECTION MENU',data.menu);
                     return data.menu;
                 } else {    
                     this.context.setErrorMessage(data.error);
