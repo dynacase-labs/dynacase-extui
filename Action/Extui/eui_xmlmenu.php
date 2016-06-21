@@ -20,9 +20,9 @@ include_once "FDL/Class.Doc.php";
 /**
  * Display info before download
  * @param Action &$action current action
- * @global id Http var : id document for context menu
- * @global collectionId Http var : id collection where is actually the document (the context)
- * @global menuxml Http var : the xml menu file APP:file.xml
+ * @global string $id Http var : id document for context menu
+ * @global string $collectionId Http var : id collection where is actually the document (the context)
+ * @global string $menuxml Http var : the xml menu file APP:file.xml
  */
 function eui_xmlmenu(Action & $action)
 {
@@ -35,7 +35,7 @@ function eui_xmlmenu(Action & $action)
 }
 function eui_getxmlmenu($docid, $menuxml, $folderid = 0)
 {
-    $dbaccess = getParam("FREEDOM_DB");
+    $dbaccess = getDbAccess();
     $err = "";
     $out = array();
     list($menuapp, $menulay) = explode(":", $menuxml);
@@ -121,6 +121,13 @@ function eui_getxmlmenu($docid, $menuxml, $folderid = 0)
     return $out;
 }
 
+/**
+ * @param  SimpleXMLElement    $im
+ * @param \Doc $doc
+ * @param \Dir $folder
+ *
+ * @return array
+ */
 function parseItemMenu($im, & $doc = null, &$folder = null)
 {
     $control = $im->control;

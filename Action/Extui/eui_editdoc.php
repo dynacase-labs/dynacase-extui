@@ -52,7 +52,7 @@ function eui_editdoc(Action & $action)
     }
     
     $docid = GetHttpVars("id");
-    $dbaccess = $action->GetParam("FREEDOM_DB");
+    $dbaccess = $action->dbaccess;
     
     if (($docid === 0) || ($docid === "") || ($docid === "0")) {
         if ($classid == "") $action->exitError(sprintf(_("Creation aborded : no family specified")));
