@@ -21,9 +21,6 @@ PACKAGE=dynacase-extui
 AC_SUBST(APPNAME)
 APPNAME=EXTUI
 
-LICENSE="http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License"
-AC_SUBST(LICENSE)
-
 ac_default_prefix=/usr/share/what
 AC_SUBST(PUBRULE)
 PUBRULE="$(pwd)/buildTools"

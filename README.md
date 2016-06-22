@@ -1,12 +1,15 @@
-Dynacase Extui  
-=================
+# Dynacase Extui  
 
-_Create ExtJs Interface with dynacase document widget._  
+## Description
 
+Create ExtJs Interface with dynacase document widget.
 
+## Licence
 
-Contributing
-------------
+Merci de vous référer au fichier [LICENSE](LICENSE) pour connaitre les droits
+de modification et de distribution du module et de son code source.
 
-Dynacase is an open source project. You can help us by contributing to documentation, reporting bugs, forking the code to add features or make bug fixes or promoting it on twitter, etc.
+La licence s'applique à l'ensemble des codes source du module. 
 
+Elle prévaut sur toutes licences qui pourraient être mentionnées dans certains
+fichiers.

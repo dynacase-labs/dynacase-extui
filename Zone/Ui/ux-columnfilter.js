@@ -1,7 +1,6 @@
 
 /**
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
 // Source code taken from https://extjs.net/forum/showthread.php?p=386069
